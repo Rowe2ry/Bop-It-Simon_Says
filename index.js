@@ -26,8 +26,9 @@ let intervalID;
 // build the sequence
 const buildSequence = () => {
     const index = Math.floor(Math.random() * 4);
-    currentSequence.push(commands[index]);
-    currentSequenceString=currentSequenceString.concat(commands[index][0]);
+    currentSequence.push(commands[index]); // add commands to the array
+    // built a secuence string with the first character of each command in the array
+    currentSequenceString = currentSequenceString.concat(commands[index][0]);
 }
 
 // user prompt
@@ -35,15 +36,15 @@ const askForInput = () => {
     prompt(question).then((res) => {
         // correct
         if (res.bops.toUpperCase() == currentSequenceString) {
-            clearInterval(intervalID);
+            clearInterval(intervalID); // stop the timer
             if (!penalty) { // if penalty is zero, start off at half a second
                 penalty = 500
             } else {
                 penalty = penalty * 1.5; // increase pnealty 150%
             }
-            startGame();
+            startGame(); // recursive, start a new game
         } else {
-            endGame();
+            endGame(); // wrong, game over
         };
     });
 }
@@ -53,7 +54,7 @@ const timerCountdown = (timer) => {
     intervalID = setInterval(()=> {
         timer-= 100;
         if (timer <= 0) {
-            endGame();
+            endGame(); // time is up
         }
     }, 100)
 }
@@ -64,7 +65,6 @@ const showSequence = () => {
     const loops = currentSequence.length;
     for (let i = 0; i < loops; i++) {
         console.log(currentSequence[i]);
-        setTimeout(()=> 1,800);
     }
 }
 
@@ -72,7 +72,7 @@ const showSequence = () => {
 const startGame = async () => {
     // set the time limit for this round
     timeLimit = (5000 - penalty);
-    // start the commands
+    // add a new command
     buildSequence();
     // show the sequence
     showSequence();
