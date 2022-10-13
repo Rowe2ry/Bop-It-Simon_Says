@@ -19,8 +19,8 @@ const commands = [
 // starting values
 let currentSequence = [];
 let currentSequenceString ='';
-let timeLimit = 5000;
-let penalty = 0;
+let timeLimit = 5500;
+let penalty = 500;
 let intervalID;
 
 // build the sequence
@@ -37,12 +37,8 @@ const askForInput = () => {
         // correct
         if (res.bops.toUpperCase() == currentSequenceString) {
             clearInterval(intervalID); // stop the timer
-            if (!penalty) { // if penalty is zero, start off at half a second
-                penalty = 500
-            } else {
-                penalty = penalty * 1.5; // increase pnealty 150%
-            }
-            startGame(); // recursive, start a new game
+            penalty = penalty * 1.5; // increase pnealty 150%
+            startGame(); // recursive, start a new game w/ the new penalty and continue building the sequence
         } else {
             endGame(); // wrong, game over
         };
@@ -71,7 +67,7 @@ const showSequence = () => {
 // a game of Bop It
 const startGame = async () => {
     // set the time limit for this round
-    timeLimit = (5000 - penalty);
+    timeLimit = (5500 - penalty);
     // add a new command
     buildSequence();
     // show the sequence
