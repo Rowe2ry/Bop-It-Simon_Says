@@ -17,7 +17,7 @@ Make a CLI "Bop It" app
 
 Install the dependancies (Inquirer) by running
 ```
-npm i install
+npm install
 ```
 Launch the application via node using the following command
 ```
