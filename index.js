@@ -25,22 +25,21 @@ let intervalID;
 
 // build the sequence
 const buildSequence = () => {
-        const index = Math.floor(Math.random() * 4);
-        currentSequence.push(commands[index]); // add commands to the array
-        // built a secuence string with the first character of each command in the array
-        currentSequenceString = currentSequenceString.concat(commands[index][0]);
-    }
+    const index = Math.floor(Math.random() * 4);
+    currentSequence.push(commands[index]); // add commands to the array
+    // built a secuence string with the first character of each command in the array
+    currentSequenceString = currentSequenceString.concat(commands[index][0]);
+}
 
-    // user prompt
-    const askForInput = () => {
-        prompt(question).then((res) => {
-            // correct
-            if (res.bops.toUpperCase() == currentSequenceString) {
-                clearInterval(intervalID); // stop the timer
-                penalty = penalty * 1.25; // increase pnealty 125%
+// user prompt
+const askForInput = () => {
+    prompt(question).then((res) => { // if correct
+        if (res.bops.toUpperCase() == currentSequenceString) {
+            clearInterval(intervalID); // stop the timer
+            penalty = penalty * 1.25; // increase pnealty 125%
             startGame(); // recursive, start a new game w/ the new penalty and continue building the sequence
-        } else {
-            endGame(); // wrong, game over
+        } else {  // wrong, game over
+            endGame();
         };
     });
 }
@@ -52,7 +51,7 @@ const timerCountdown = (timer) => {
         if (timer <= 0) {
             endGame(); // time is up
         }
-    }, 100)
+    }, 100);
 }
 
 // show the user the sequence
@@ -65,7 +64,7 @@ const showSequence = () => {
 }
 
 // a game of Bop It
-const startGame = async () => {
+const startGame = () => {
     // set the time limit for this round
     if (penalty <= 4250) {
         timeLimit = (5500 - penalty);
@@ -79,7 +78,7 @@ const startGame = async () => {
     // start the timer
     timerCountdown(timeLimit);
     // ask the question
-    const question = await askForInput();
+    askForInput();
 }
 
 // end the game
