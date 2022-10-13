@@ -25,19 +25,19 @@ let intervalID;
 
 // build the sequence
 const buildSequence = () => {
-    const index = Math.floor(Math.random() * 4);
-    currentSequence.push(commands[index]); // add commands to the array
-    // built a secuence string with the first character of each command in the array
-    currentSequenceString = currentSequenceString.concat(commands[index][0]);
-}
+        const index = Math.floor(Math.random() * 4);
+        currentSequence.push(commands[index]); // add commands to the array
+        // built a secuence string with the first character of each command in the array
+        currentSequenceString = currentSequenceString.concat(commands[index][0]);
+    }
 
-// user prompt
-const askForInput = () => {
-    prompt(question).then((res) => {
-        // correct
-        if (res.bops.toUpperCase() == currentSequenceString) {
-            clearInterval(intervalID); // stop the timer
-            penalty = penalty * 1.5; // increase pnealty 150%
+    // user prompt
+    const askForInput = () => {
+        prompt(question).then((res) => {
+            // correct
+            if (res.bops.toUpperCase() == currentSequenceString) {
+                clearInterval(intervalID); // stop the timer
+                penalty = penalty * 1.25; // increase pnealty 125%
             startGame(); // recursive, start a new game w/ the new penalty and continue building the sequence
         } else {
             endGame(); // wrong, game over
@@ -67,7 +67,11 @@ const showSequence = () => {
 // a game of Bop It
 const startGame = async () => {
     // set the time limit for this round
-    timeLimit = (5500 - penalty);
+    if (penalty <= 4250) {
+        timeLimit = (5500 - penalty);
+    } else {
+        timeLimit = 750 // min time is 750ms
+    }
     // add a new command
     buildSequence();
     // show the sequence
