@@ -1,3 +1,6 @@
+/* =====================================================
+ * Dependancy Imports
+ * ===================================================== */
 import { createPromptModule } from 'inquirer';
 const prompt = createPromptModule();
 
@@ -21,11 +24,11 @@ const commands = [
 ]
 
 // starting values
-const currentSequence = [];
-let currentSequenceString ='';
-let timeLimit = 5500;
-let penalty = 500;
-let intervalID;
+const currentSequence = []; // instructions for user
+let currentSequenceString =''; // input sequence user will need to match
+let timeLimit = 5500; // 5.5 seconds
+let penalty = 500; // 1/2 second
+let intervalID; // assigned to game timer; Ref. for timer stop and reset.
 
 /* =====================================================
  * Function Definitions
@@ -42,7 +45,7 @@ const calculateTimeLimit = () => {
 
 // build the sequence
 const buildSequence = () => {
-    const index = Math.floor(Math.random() * 4);
+    const index = Math.floor(Math.random() * 4); // random => 0, 1, 2, 3
     currentSequence.push(commands[index]); // add commands to the array
     // build a secuence string with the first character of each command in the array. the user's inuts will be tested against this string
     currentSequenceString = currentSequenceString.concat(commands[index][0]);
@@ -60,7 +63,7 @@ const showSequence = () => {
 // user prompt
 const askForInput = () => {
     prompt(question).then((res) => { // if correct
-        if (res.bops.toUpperCase() == currentSequenceString) {
+        if (res.bops.toUpperCase() === currentSequenceString) {
             clearInterval(intervalID); // stop the timer
             penalty = penalty * 1.25; // increase pnealty 125%
             startGame(); // recursive, start a new game w/ the new penalty and continue building the sequence
