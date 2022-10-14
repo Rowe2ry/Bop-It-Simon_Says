@@ -1,6 +1,10 @@
 import { createPromptModule } from 'inquirer';
 const prompt = createPromptModule();
 
+/* =====================================================
+ * Global Variable Declarations
+ * ===================================================== */
+
 // THE one question
 const question = {
     type: 'input',
@@ -17,18 +21,40 @@ const commands = [
 ]
 
 // starting values
-let currentSequence = [];
+const currentSequence = [];
 let currentSequenceString ='';
 let timeLimit = 5500;
 let penalty = 500;
 let intervalID;
 
+/* =====================================================
+ * Function Definitions
+ * ===================================================== */
+
+// calculate the time limit for the new round
+const calculateTimeLimit = () => {
+    if (penalty <= 4250) {
+        timeLimit = (5500 - penalty);
+    } else {
+        timeLimit = 750 // min time is 750ms
+    }
+}
+
 // build the sequence
 const buildSequence = () => {
     const index = Math.floor(Math.random() * 4);
     currentSequence.push(commands[index]); // add commands to the array
-    // built a secuence string with the first character of each command in the array
+    // build a secuence string with the first character of each command in the array. the user's inuts will be tested against this string
     currentSequenceString = currentSequenceString.concat(commands[index][0]);
+}
+
+// show the user the sequence
+const showSequence = () => {
+    // how many in the sequence
+    const loops = currentSequence.length;
+    for (let i = 0; i < loops; i++) {
+        console.log(currentSequence[i]);
+    }
 }
 
 // user prompt
@@ -54,23 +80,16 @@ const timerCountdown = (timer) => {
     }, 100);
 }
 
-// show the user the sequence
-const showSequence = () => {
-    // how many in the sequence
-    const loops = currentSequence.length;
-    for (let i = 0; i < loops; i++) {
-        console.log(currentSequence[i]);
-    }
+// end the game
+const endGame = () =>{
+    console.log(`You lost when your sequence was ${currentSequence.length} commands long`);
+    process.exit();
 }
 
 // a game of Bop It
 const startGame = () => {
     // set the time limit for this round
-    if (penalty <= 4250) {
-        timeLimit = (5500 - penalty);
-    } else {
-        timeLimit = 750 // min time is 750ms
-    }
+    calculateTimeLimit();
     // add a new command
     buildSequence();
     // show the sequence
@@ -81,11 +100,9 @@ const startGame = () => {
     askForInput();
 }
 
-// end the game
-const endGame = () =>{
-    console.log(`You lost when your sequence was ${currentSequence.length} commands long`);
-    process.exit();
-}
+/* =====================================================
+ * Function Calls
+ * ===================================================== */
 
 // call the game upon launch
 startGame();
