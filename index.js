@@ -47,7 +47,7 @@ const calculateTimeLimit = () => {
 const buildSequence = () => {
     const index = Math.floor(Math.random() * 4); // random => 0, 1, 2, 3
     currentSequence.push(commands[index]); // add commands to the array
-    // build a secuence string with the first character of each command in the array. the user's inuts will be tested against this string
+    // build a secuence string with the first character of each command in the array. the user's inputs will be tested against this string
     currentSequenceString = currentSequenceString.concat(commands[index][0]);
 }
 
